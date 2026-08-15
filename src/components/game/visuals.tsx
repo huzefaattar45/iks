@@ -19,7 +19,7 @@ export function ClockVisualization({ hour = 9, minute = 0 }: { hour?: number; mi
             style={{
               left: `${(50 + 40 * Math.cos(angle)).toFixed(3)}%`,
               top: `${(50 + 40 * Math.sin(angle)).toFixed(3)}%`,
-              transform: "translate(-50%,-50%)",
+              transform: "translate(-50%, -50%)",
             }}
           >
             {i + 1}
@@ -28,13 +28,13 @@ export function ClockVisualization({ hour = 9, minute = 0 }: { hour?: number; mi
       })}
       <motion.div
         className="absolute left-1/2 top-1/2 h-[24%] w-1 origin-bottom rounded-full bg-foreground"
-        style={{ transform: `translate(-50%,-100%) rotate(${hourAngle}deg)`, transformOrigin: "bottom center" }}
+        style={{ transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`, transformOrigin: "bottom center" }}
         animate={{ rotate: hourAngle }}
         transition={{ type: "spring", stiffness: 60 }}
       />
       <motion.div
         className="absolute left-1/2 top-1/2 h-[34%] w-0.5 origin-bottom rounded-full bg-accent"
-        style={{ transform: `translate(-50%,-100%) rotate(${minuteAngle}deg)`, transformOrigin: "bottom center" }}
+        style={{ transform: `translate(-50%, -100%) rotate(${minuteAngle}deg)`, transformOrigin: "bottom center" }}
       />
       <div className="absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary glow-primary" />
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-lg border border-border bg-background/80 px-3 py-1 font-mono text-xs tracking-[0.25em]">
@@ -68,7 +68,7 @@ export function CalendarWheel({ activeIndex = 0 }: { activeIndex?: number }) {
             style={{
               left: `${(50 + 36 * Math.cos(angle)).toFixed(3)}%`,
               top: `${(50 + 36 * Math.sin(angle)).toFixed(3)}%`,
-              transform: "translate(-50%,-50%)",
+              transform: "translate(-50%, -50%)",
             }}
           >
             {d}
@@ -98,7 +98,7 @@ export function CipherWheel({ offset = 3, size = 340 }: { offset?: number; size?
             style={{
               left: `${(50 + (r1 / size) * 100 * Math.cos(a)).toFixed(3)}%`,
               top: `${(50 + (r1 / size) * 100 * Math.sin(a)).toFixed(3)}%`,
-              transform: "translate(-50%,-50%)",
+              transform: "translate(-50%, -50%)",
             }}
           >
             {c}
@@ -119,7 +119,7 @@ export function CipherWheel({ offset = 3, size = 340 }: { offset?: number; size?
               style={{
                 left: `${(50 + (r2 / (size - 80)) * 100 * Math.cos(a)).toFixed(3)}%`,
                 top: `${(50 + (r2 / (size - 80)) * 100 * Math.sin(a)).toFixed(3)}%`,
-                transform: "translate(-50%,-50%)",
+                transform: "translate(-50%, -50%)",
               }}
             >
               {c}
