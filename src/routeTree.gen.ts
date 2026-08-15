@@ -10,33 +10,167 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as BriefingRouteImport } from './routes/briefing'
+import { Route as CipherLabRouteImport } from './routes/cipher-lab'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as LeaderboardRouteImport } from './routes/leaderboard'
+import { Route as LevelsRouteImport } from './routes/levels'
+import { Route as SolutionLogRouteImport } from './routes/solution-log'
+import { Route as SuccessRouteImport } from './routes/success'
+import { Route as VaultRouteImport } from './routes/vault'
+import { Route as LevelIdRouteImport } from './routes/level.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BriefingRoute = BriefingRouteImport.update({
+  id: '/briefing',
+  path: '/briefing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CipherLabRoute = CipherLabRouteImport.update({
+  id: '/cipher-lab',
+  path: '/cipher-lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeaderboardRoute = LeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LevelsRoute = LevelsRouteImport.update({
+  id: '/levels',
+  path: '/levels',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolutionLogRoute = SolutionLogRouteImport.update({
+  id: '/solution-log',
+  path: '/solution-log',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuccessRoute = SuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VaultRoute = VaultRouteImport.update({
+  id: '/vault',
+  path: '/vault',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LevelIdRoute = LevelIdRouteImport.update({
+  id: '/level/$id',
+  path: '/level/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/briefing': typeof BriefingRoute
+  '/cipher-lab': typeof CipherLabRoute
+  '/dashboard': typeof DashboardRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/levels': typeof LevelsRoute
+  '/solution-log': typeof SolutionLogRoute
+  '/success': typeof SuccessRoute
+  '/vault': typeof VaultRoute
+  '/level/$id': typeof LevelIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/briefing': typeof BriefingRoute
+  '/cipher-lab': typeof CipherLabRoute
+  '/dashboard': typeof DashboardRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/levels': typeof LevelsRoute
+  '/solution-log': typeof SolutionLogRoute
+  '/success': typeof SuccessRoute
+  '/vault': typeof VaultRoute
+  '/level/$id': typeof LevelIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/briefing': typeof BriefingRoute
+  '/cipher-lab': typeof CipherLabRoute
+  '/dashboard': typeof DashboardRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/levels': typeof LevelsRoute
+  '/solution-log': typeof SolutionLogRoute
+  '/success': typeof SuccessRoute
+  '/vault': typeof VaultRoute
+  '/level/$id': typeof LevelIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/briefing'
+    | '/cipher-lab'
+    | '/dashboard'
+    | '/leaderboard'
+    | '/levels'
+    | '/solution-log'
+    | '/success'
+    | '/vault'
+    | '/level/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/briefing'
+    | '/cipher-lab'
+    | '/dashboard'
+    | '/leaderboard'
+    | '/levels'
+    | '/solution-log'
+    | '/success'
+    | '/vault'
+    | '/level/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/briefing'
+    | '/cipher-lab'
+    | '/dashboard'
+    | '/leaderboard'
+    | '/levels'
+    | '/solution-log'
+    | '/success'
+    | '/vault'
+    | '/level/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  BriefingRoute: typeof BriefingRoute
+  CipherLabRoute: typeof CipherLabRoute
+  DashboardRoute: typeof DashboardRoute
+  LeaderboardRoute: typeof LeaderboardRoute
+  LevelsRoute: typeof LevelsRoute
+  SolutionLogRoute: typeof SolutionLogRoute
+  SuccessRoute: typeof SuccessRoute
+  VaultRoute: typeof VaultRoute
+  LevelIdRoute: typeof LevelIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +182,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/briefing': {
+      id: '/briefing'
+      path: '/briefing'
+      fullPath: '/briefing'
+      preLoaderRoute: typeof BriefingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cipher-lab': {
+      id: '/cipher-lab'
+      path: '/cipher-lab'
+      fullPath: '/cipher-lab'
+      preLoaderRoute: typeof CipherLabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leaderboard': {
+      id: '/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof LeaderboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/levels': {
+      id: '/levels'
+      path: '/levels'
+      fullPath: '/levels'
+      preLoaderRoute: typeof LevelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solution-log': {
+      id: '/solution-log'
+      path: '/solution-log'
+      fullPath: '/solution-log'
+      preLoaderRoute: typeof SolutionLogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/success': {
+      id: '/success'
+      path: '/success'
+      fullPath: '/success'
+      preLoaderRoute: typeof SuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vault': {
+      id: '/vault'
+      path: '/vault'
+      fullPath: '/vault'
+      preLoaderRoute: typeof VaultRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/level/$id': {
+      id: '/level/$id'
+      path: '/level/$id'
+      fullPath: '/level/$id'
+      preLoaderRoute: typeof LevelIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  BriefingRoute: BriefingRoute,
+  CipherLabRoute: CipherLabRoute,
+  DashboardRoute: DashboardRoute,
+  LeaderboardRoute: LeaderboardRoute,
+  LevelsRoute: LevelsRoute,
+  SolutionLogRoute: SolutionLogRoute,
+  SuccessRoute: SuccessRoute,
+  VaultRoute: VaultRoute,
+  LevelIdRoute: LevelIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
