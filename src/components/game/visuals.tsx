@@ -17,8 +17,8 @@ export function ClockVisualization({ hour = 9, minute = 0 }: { hour?: number; mi
             key={i}
             className="absolute font-mono text-sm text-muted-foreground"
             style={{
-              left: `${50 + 40 * Math.cos(angle)}%`,
-              top: `${50 + 40 * Math.sin(angle)}%`,
+              left: `${(50 + 40 * Math.cos(angle)).toFixed(3)}%`,
+              top: `${(50 + 40 * Math.sin(angle)).toFixed(3)}%`,
               transform: "translate(-50%,-50%)",
             }}
           >
@@ -66,8 +66,8 @@ export function CalendarWheel({ activeIndex = 0 }: { activeIndex?: number }) {
                 : "border-border bg-foreground/5 text-muted-foreground",
             )}
             style={{
-              left: `${50 + 36 * Math.cos(angle)}%`,
-              top: `${50 + 36 * Math.sin(angle)}%`,
+              left: `${(50 + 36 * Math.cos(angle)).toFixed(3)}%`,
+              top: `${(50 + 36 * Math.sin(angle)).toFixed(3)}%`,
               transform: "translate(-50%,-50%)",
             }}
           >
@@ -96,8 +96,8 @@ export function CipherWheel({ offset = 3, size = 340 }: { offset?: number; size?
             key={"o" + c}
             className="absolute font-mono text-[0.65rem] text-muted-foreground"
             style={{
-              left: `${50 + (r1 / size) * 100 * Math.cos(a)}%`,
-              top: `${50 + (r1 / size) * 100 * Math.sin(a)}%`,
+              left: `${(50 + (r1 / size) * 100 * Math.cos(a)).toFixed(3)}%`,
+              top: `${(50 + (r1 / size) * 100 * Math.sin(a)).toFixed(3)}%`,
               transform: "translate(-50%,-50%)",
             }}
           >
@@ -117,8 +117,8 @@ export function CipherWheel({ offset = 3, size = 340 }: { offset?: number; size?
               key={"i" + c}
               className="absolute font-mono text-[0.65rem] font-semibold text-accent"
               style={{
-                left: `${50 + (r2 / (size - 80)) * 100 * Math.cos(a)}%`,
-                top: `${50 + (r2 / (size - 80)) * 100 * Math.sin(a)}%`,
+                left: `${(50 + (r2 / (size - 80)) * 100 * Math.cos(a)).toFixed(3)}%`,
+                top: `${(50 + (r2 / (size - 80)) * 100 * Math.sin(a)).toFixed(3)}%`,
                 transform: "translate(-50%,-50%)",
               }}
             >
