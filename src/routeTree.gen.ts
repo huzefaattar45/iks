@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BriefingRouteImport } from './routes/briefing'
+import { Route as CipherLabRouteImport } from './routes/cipher-lab'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LevelsRouteImport } from './routes/levels'
+import { Route as LevelIdRouteImport } from './routes/level.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const BriefingRoute = BriefingRouteImport.update({
   id: '/briefing',
   path: '/briefing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CipherLabRoute = CipherLabRouteImport.update({
+  id: '/cipher-lab',
+  path: '/cipher-lab',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -34,39 +41,61 @@ const LevelsRoute = LevelsRouteImport.update({
   path: '/levels',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LevelIdRoute = LevelIdRouteImport.update({
+  id: '/level/$id',
+  path: '/level/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/briefing': typeof BriefingRoute
+  '/cipher-lab': typeof CipherLabRoute
   '/dashboard': typeof DashboardRoute
   '/levels': typeof LevelsRoute
+  '/level/$id': typeof LevelIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/briefing': typeof BriefingRoute
+  '/cipher-lab': typeof CipherLabRoute
   '/dashboard': typeof DashboardRoute
   '/levels': typeof LevelsRoute
+  '/level/$id': typeof LevelIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/briefing': typeof BriefingRoute
+  '/cipher-lab': typeof CipherLabRoute
   '/dashboard': typeof DashboardRoute
   '/levels': typeof LevelsRoute
+  '/level/$id': typeof LevelIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/briefing' | '/dashboard' | '/levels'
+  fullPaths:
+    '/' | '/briefing' | '/cipher-lab' | '/dashboard' | '/levels' | '/level/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/briefing' | '/dashboard' | '/levels'
-  id: '__root__' | '/' | '/briefing' | '/dashboard' | '/levels'
+  to:
+    '/' | '/briefing' | '/cipher-lab' | '/dashboard' | '/levels' | '/level/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/briefing'
+    | '/cipher-lab'
+    | '/dashboard'
+    | '/levels'
+    | '/level/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BriefingRoute: typeof BriefingRoute
+  CipherLabRoute: typeof CipherLabRoute
   DashboardRoute: typeof DashboardRoute
   LevelsRoute: typeof LevelsRoute
+  LevelIdRoute: typeof LevelIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,6 +114,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BriefingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cipher-lab': {
+      id: '/cipher-lab'
+      path: '/cipher-lab'
+      fullPath: '/cipher-lab'
+      preLoaderRoute: typeof CipherLabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -99,14 +135,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LevelsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/level/$id': {
+      id: '/level/$id'
+      path: '/level/$id'
+      fullPath: '/level/$id'
+      preLoaderRoute: typeof LevelIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BriefingRoute: BriefingRoute,
+  CipherLabRoute: CipherLabRoute,
   DashboardRoute: DashboardRoute,
   LevelsRoute: LevelsRoute,
+  LevelIdRoute: LevelIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
