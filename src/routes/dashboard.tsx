@@ -74,7 +74,7 @@ function Dashboard() {
             return (
               <div key={l.id} className="flex flex-1 items-center gap-3 sm:flex-col">
                 <motion.div
-                  animate={state === "current" ? { boxShadow: ["0 0 0px var(--color-primary)", "0 0 24px var(--color-primary)", "0 0 0px var(--color-primary)"] } : undefined}
+                  animate={state === "current" ? { boxShadow: ["0 0 0px var(--color-primary)", "0 0 24px var(--color-primary)", "0 0 0px var(--color-primary)"] } : {}}
                   transition={{ duration: 2.4, repeat: Infinity }}
                   className={cn(
                     "grid size-12 shrink-0 place-items-center rounded-2xl border font-mono text-sm font-bold",

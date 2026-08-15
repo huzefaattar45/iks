@@ -39,7 +39,7 @@ function Levels() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06 }}
-              whileHover={locked ? undefined : { y: -4 }}
+              whileHover={locked ? {} : { y: -4 }}
             >
               <Panel
                 glow={locked ? "none" : "primary"}
