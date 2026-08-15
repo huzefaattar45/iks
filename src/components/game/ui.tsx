@@ -85,7 +85,7 @@ export function Button({
   return (
     <motion.button
       type={type}
-      whileTap={disabled ? undefined : { scale: 0.97 }}
+      whileTap={{ scale: disabled ? 1 : 0.97 }}
       onClick={onClick}
       disabled={disabled}
       className={cn(
