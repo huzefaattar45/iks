@@ -1,9 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { AlertTriangle, Lock, Unlock } from "lucide-react";
 import { AppLayout, PageHeader } from "@/components/game/AppLayout";
 import { Badge, Button, Panel } from "@/components/game/ui";
 import { BRIEFING_LAYERS } from "@/lib/game-data";
+import { startSession } from "@/lib/gameStore";
 
 export const Route = createFileRoute("/briefing")({
   head: () => ({
@@ -18,6 +19,12 @@ export const Route = createFileRoute("/briefing")({
 });
 
 function Briefing() {
+  const navigate = useNavigate();
+
+  const handleBeginMission = () => {
+    startSession(); // stamps startedAt right now — timer begins from this click
+    navigate({ to: "/level/$id", params: { id: "1" } });
+  };
   return (
     <AppLayout breadcrumb="Mission Briefing">
       <PageHeader
@@ -72,9 +79,7 @@ function Briefing() {
       </div>
 
       <div className="mt-8">
-        <Link to="/level/$id" params={{ id: "1" }}>
-          <Button>Begin Mission</Button>
-        </Link>
+        <Button onClick={handleBeginMission}>Begin Mission</Button>
       </div>
     </AppLayout>
   );

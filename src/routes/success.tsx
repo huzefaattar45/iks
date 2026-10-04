@@ -1,9 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { Unlock } from "lucide-react";
 import { Button, Panel, StatTile } from "@/components/game/ui";
 import { ParticleField } from "@/components/game/visuals";
-import { PLAYER } from "@/lib/game-data";
+import { finishSession, resetSession, formatTime, elapsedSeconds, getSession } from "@/lib/gameStore";
 
 export const Route = createFileRoute("/success")({
   head: () => ({
@@ -18,6 +19,25 @@ export const Route = createFileRoute("/success")({
 });
 
 function SuccessPage() {
+  // Freeze the timer the moment this page mounts
+  useEffect(() => {
+    finishSession();
+  }, []);
+
+  // Snapshot final values from the (now-frozen) session
+  const session = getSession();
+  const time = formatTime(elapsedSeconds());
+  const score = session.score;
+  const hints = session.hintsUsed;
+  const levels = Math.min(session.levelsCompleted, 5);
+
+  const navigate = useNavigate();
+
+  const handlePlayAgain = () => {
+    resetSession(); // wipe state so next run starts from zero
+    navigate({ to: "/briefing" });
+  };
+
   return (
     <div className="grid-bg relative grid min-h-screen place-items-center bg-background px-4 py-12">
       <ParticleField />
@@ -34,16 +54,19 @@ function SuccessPage() {
         >
           <Unlock className="size-9 text-success" />
         </motion.div>
-        <h1 className="mt-6 text-3xl font-bold tracking-tight sm:text-4xl">VAULT UNLOCKED</h1>
+        <h1 className="mt-6 text-3xl font-bold tracking-tight sm:text-4xl">🎉 CONGRATULATIONS!</h1>
         <p className="mt-2 font-mono text-xs tracking-[0.22em] uppercase text-muted-foreground">
-          You escaped the Cipher Vault
+          You Finished the Mission
+        </p>
+        <p className="mt-3 max-w-sm mx-auto text-sm text-muted-foreground">
+          All 5 security layers disabled. The Cipher Vault is yours.
         </p>
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <StatTile label="Time" value={PLAYER.time} accent="text-accent" />
-          <StatTile label="Score" value={PLAYER.score} accent="text-warning" />
-          <StatTile label="Hints" value={PLAYER.hints} />
-          <StatTile label="Levels" value="5 / 5" accent="text-success" />
+          <StatTile label="Time" value={time} accent="text-accent" />
+          <StatTile label="Score" value={score} accent="text-warning" />
+          <StatTile label="Hints" value={hints} />
+          <StatTile label="Levels" value={`${levels} / 5`} accent="text-success" />
         </div>
 
         <Panel className="mt-6">
@@ -51,9 +74,9 @@ function SuccessPage() {
             <Link to="/solution-log">
               <Button>View Solution Log</Button>
             </Link>
-            <Link to="/briefing">
-              <Button variant="outline">Play Again</Button>
-            </Link>
+            <Button variant="outline" onClick={handlePlayAgain}>
+              Play Again
+            </Button>
             <Link to="/dashboard">
               <Button variant="ghost">Return to Dashboard</Button>
             </Link>

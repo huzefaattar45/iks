@@ -147,7 +147,7 @@ function VaultPage() {
 
           {error && (
             <p className="mt-4 font-mono text-[0.68rem] tracking-[0.18em] text-destructive">
-              ✕ ACCESS DENIED — TRY 2374
+              ✕ ACCESS DENIED — INVALID PASSCODE
             </p>
           )}
         </Panel>

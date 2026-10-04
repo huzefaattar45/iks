@@ -1,19 +1,39 @@
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { Lightbulb } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 import { PuzzleShell } from "./PuzzleShell";
 import { Button, MathDisplay, Modal, Panel } from "@/components/game/ui";
 import { CalendarWheel } from "@/components/game/visuals";
 import { cn } from "@/lib/utils";
+import { recordHint, recordLevelComplete, recordWrongAnswer, resetSession, getSession } from "@/lib/gameStore";
 
 const DAYS = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 
 export function Level2() {
   const [selected, setSelected] = useState<string | null>(null);
-  const [modal, setModal] = useState<null | "success" | "error" | "hint">(null);
+  const [modal, setModal] = useState<null | "success" | "error" | "hint" | "failed">(null);
+  const [solved, setSolved] = useState(false);
+  const navigate = useNavigate();
 
-  // MOCK validation
-  const handleSubmit = () => setModal(selected === "THURSDAY" ? "success" : "error");
+  const handleSubmit = () => {
+    const ok = selected === "THURSDAY";
+    if (ok) {
+      setSolved(true);
+      recordLevelComplete();
+      setModal("success");
+    } else {
+      const { failed } = recordWrongAnswer();
+      setModal(failed ? "failed" : "error");
+    }
+  };
+
+  const handleRestart = () => {
+    resetSession();
+    navigate({ to: "/briefing" });
+  };
+
+  const currentLives = getSession().lives;
 
   return (
     <>
@@ -57,23 +77,62 @@ export function Level2() {
                 <Button onClick={handleSubmit} disabled={!selected}>
                   Submit Answer
                 </Button>
-                <Button variant="outline" onClick={() => setModal("hint")}>
+                <Button variant="outline" onClick={() => { recordHint(); setModal("hint"); }}>
                   <Lightbulb className="size-3.5" /> Show Hint
                 </Button>
               </div>
             </Panel>
 
-            <Panel className="bg-background/70">
-              <div className="label-xs">Remainder Log // Terminal</div>
-              <MathDisplay className="mt-3" lines={["45 mod 7 = 3", "Monday + 3 = Thursday"]} />
-            </Panel>
+            <AnimatePresence>
+              {solved && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <Panel className="bg-background/70">
+                    <div className="label-xs">Remainder Log // Terminal</div>
+                    <MathDisplay className="mt-3" lines={["45 mod 7 = 3", "Monday + 3 = Thursday"]} />
+                  </Panel>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </>
         }
       />
 
-      <Modal open={modal === "success"} onClose={() => setModal(null)} tone="success" title="✓ Calendar Lock Disabled" message="Security layer disabled." />
-      <Modal open={modal === "error"} onClose={() => setModal(null)} tone="error" title="✕ Access Denied" message="Incorrect code. Try again." />
-      <Modal open={modal === "hint"} onClose={() => setModal(null)} tone="hint" title="Hint" message="Weeks repeat every 7 days — only the remainder of 45 ÷ 7 matters." />
+      <Modal
+        open={modal === "success"}
+        onClose={() => setModal(null)}
+        onNext={() => navigate({ to: "/level/$id", params: { id: "3" } })}
+        tone="success"
+        title="✓ Calendar Lock Disabled"
+        message="Security layer disabled. Ready for the next challenge."
+      />
+      <Modal
+        open={modal === "error"}
+        onClose={() => setModal(null)}
+        tone="error"
+        title="✕ Access Denied"
+        message={`Incorrect code. You lost 1 life! (${currentLives} ${currentLives === 1 ? "life" : "lives"} remaining)`}
+      />
+      <Modal
+        open={modal === "failed"}
+        onClose={handleRestart}
+        onNext={handleRestart}
+        nextLabel="Restart Mission ↻"
+        closeLabel="Return to Briefing"
+        tone="failed"
+        title="☠ MISSION FAILED"
+        message="All lives exhausted! The security system detected intrusion and locked down the Cipher Vault."
+      />
+      <Modal
+        open={modal === "hint"}
+        onClose={() => setModal(null)}
+        tone="hint"
+        title="Hint"
+        message="Weeks repeat every 7 days — only the remainder of 45 ÷ 7 matters."
+      />
     </>
   );
 }

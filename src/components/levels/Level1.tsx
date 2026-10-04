@@ -1,21 +1,35 @@
 import { useState } from "react";
 import { Lightbulb } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 import { PuzzleShell } from "./PuzzleShell";
 import { AnswerInput, Button, Modal, Panel, ReasoningPanel, type FeedbackState } from "@/components/game/ui";
 import { ClockVisualization } from "@/components/game/visuals";
+import { recordHint, recordLevelComplete, recordWrongAnswer, resetSession, getSession } from "@/lib/gameStore";
 
 export function Level1() {
   const [answer, setAnswer] = useState("");
   const [state, setState] = useState<FeedbackState>("idle");
-  const [modal, setModal] = useState<null | "success" | "error" | "hint">(null);
+  const [modal, setModal] = useState<null | "success" | "error" | "hint" | "failed">(null);
+  const navigate = useNavigate();
 
-  // MOCK: replace with real validation from the game engine.
   const handleSubmit = () => {
     const ok = answer.trim() === "2";
     setState(ok ? "correct" : "incorrect");
-    setModal(ok ? "success" : "error");
+    if (ok) {
+      recordLevelComplete();
+      setModal("success");
+    } else {
+      const { failed } = recordWrongAnswer();
+      setModal(failed ? "failed" : "error");
+    }
   };
-  const handleHint = () => setModal("hint");
+  const handleHint = () => { recordHint(); setModal("hint"); };
+  const handleRestart = () => {
+    resetSession();
+    navigate({ to: "/briefing" });
+  };
+
+  const currentLives = getSession().lives;
 
   return (
     <>
@@ -64,9 +78,38 @@ export function Level1() {
         footer={<Button onClick={handleSubmit}>Submit</Button>}
       />
 
-      <Modal open={modal === "success"} onClose={() => setModal(null)} tone="success" title="✓ Time Lock Disabled" message="Security layer disabled." />
-      <Modal open={modal === "error"} onClose={() => setModal(null)} tone="error" title="✕ Access Denied" message="Incorrect code. Try again." />
-      <Modal open={modal === "hint"} onClose={() => setModal(null)} tone="hint" title="Hint" message="Reduce the shift modulo 12 before adding it to the current hour." />
+      <Modal
+        open={modal === "success"}
+        onClose={() => setModal(null)}
+        onNext={() => navigate({ to: "/level/$id", params: { id: "2" } })}
+        tone="success"
+        title="✓ Time Lock Disabled"
+        message="Security layer disabled. Ready for the next challenge."
+      />
+      <Modal
+        open={modal === "error"}
+        onClose={() => setModal(null)}
+        tone="error"
+        title="✕ Access Denied"
+        message={`Incorrect code. You lost 1 life! (${currentLives} ${currentLives === 1 ? "life" : "lives"} remaining)`}
+      />
+      <Modal
+        open={modal === "failed"}
+        onClose={handleRestart}
+        onNext={handleRestart}
+        nextLabel="Restart Mission ↻"
+        closeLabel="Return to Briefing"
+        tone="failed"
+        title="☠ MISSION FAILED"
+        message="All lives exhausted! The security system detected intrusion and locked down the Cipher Vault."
+      />
+      <Modal
+        open={modal === "hint"}
+        onClose={() => setModal(null)}
+        tone="hint"
+        title="Hint"
+        message="Reduce the shift modulo 12 before adding it to the current hour."
+      />
     </>
   );
 }

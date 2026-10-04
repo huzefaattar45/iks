@@ -26,15 +26,23 @@ export function ClockVisualization({ hour = 9, minute = 0 }: { hour?: number; mi
           </span>
         );
       })}
-      <motion.div
-        className="absolute left-1/2 top-1/2 h-[24%] w-1 origin-bottom rounded-full bg-foreground"
-        style={{ transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`, transformOrigin: "bottom center" }}
-        animate={{ rotate: hourAngle }}
-        transition={{ type: "spring", stiffness: 60 }}
+      {/* Hour hand — pivot at clock center, extends upward */}
+      <div
+        className="absolute left-1/2 top-1/2 w-1 rounded-full bg-foreground"
+        style={{
+          height: "24%",
+          transformOrigin: "50% 100%",
+          transform: `translateX(-50%) translateY(-100%) rotate(${hourAngle}deg)`,
+        }}
       />
-      <motion.div
-        className="absolute left-1/2 top-1/2 h-[34%] w-0.5 origin-bottom rounded-full bg-accent"
-        style={{ transform: `translate(-50%, -100%) rotate(${minuteAngle}deg)`, transformOrigin: "bottom center" }}
+      {/* Minute hand — pivot at clock center, extends upward */}
+      <div
+        className="absolute left-1/2 top-1/2 w-0.5 rounded-full bg-accent"
+        style={{
+          height: "34%",
+          transformOrigin: "50% 100%",
+          transform: `translateX(-50%) translateY(-100%) rotate(${minuteAngle}deg)`,
+        }}
       />
       <div className="absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary glow-primary" />
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-lg border border-border bg-background/80 px-3 py-1 font-mono text-xs tracking-[0.25em]">

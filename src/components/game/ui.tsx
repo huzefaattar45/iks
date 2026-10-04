@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, X, Lightbulb, Lock } from "lucide-react";
+import { Check, X, Lightbulb, Lock, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type FeedbackState = "idle" | "correct" | "incorrect" | "loading";
@@ -189,22 +189,29 @@ export function ReasoningPanel({ title = "REMAINDER LOG", lines }: { title?: str
 export function Modal({
   open,
   onClose,
+  onNext,
   tone,
   title,
   message,
+  nextLabel = "Next Level →",
+  closeLabel = "Close",
   children,
 }: {
   open: boolean;
   onClose: () => void;
-  tone: "success" | "error" | "hint";
+  onNext?: () => void;
+  tone: "success" | "error" | "hint" | "failed";
   title: string;
   message?: string;
+  nextLabel?: string;
+  closeLabel?: string;
   children?: ReactNode;
 }) {
   const tones = {
     success: { ring: "border-success/40", icon: <Check className="size-6 text-success" />, glow: "shadow-[0_0_60px_-20px_var(--color-success)]" },
     error: { ring: "border-destructive/40", icon: <X className="size-6 text-destructive" />, glow: "shadow-[0_0_60px_-20px_var(--color-destructive)]" },
     hint: { ring: "border-warning/40", icon: <Lightbulb className="size-6 text-warning" />, glow: "shadow-[0_0_60px_-20px_var(--color-warning)]" },
+    failed: { ring: "border-destructive/70 ring-2 ring-destructive/30", icon: <AlertTriangle className="size-7 text-destructive animate-pulse" />, glow: "shadow-[0_0_80px_-10px_var(--color-destructive)]" },
   }[tone];
 
   return (
@@ -229,12 +236,22 @@ export function Modal({
             <div className="mx-auto grid size-14 place-items-center rounded-2xl border border-border bg-foreground/5">
               {tones.icon}
             </div>
-            <h3 className="mt-4 font-mono text-sm font-bold tracking-[0.2em] uppercase">{title}</h3>
+            <h3 className={cn(
+              "mt-4 font-mono text-sm font-bold tracking-[0.2em] uppercase",
+              tone === "failed" && "text-destructive text-base font-extrabold"
+            )}>
+              {title}
+            </h3>
             {message && <p className="mt-2 text-sm text-muted-foreground">{message}</p>}
             {children}
-            <div className="mt-6">
-              <Button variant="outline" onClick={onClose} className="w-full">
-                Close
+            <div className={cn("mt-6 flex flex-col gap-2", onNext ? "sm:flex-row" : "")}>
+              {onNext && (
+                <Button onClick={onNext} className="flex-1" variant={tone === "failed" ? "danger" : "primary"}>
+                  {nextLabel}
+                </Button>
+              )}
+              <Button variant="outline" onClick={onClose} className={onNext ? "flex-1" : "w-full"}>
+                {closeLabel}
               </Button>
             </div>
           </motion.div>
